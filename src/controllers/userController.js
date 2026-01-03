@@ -41,6 +41,13 @@ class userController {
     },
   ];
 
+  userGet = [
+    (req, res) => {
+      const user = usersDB.getUser(req.params.id);
+      res.render(`../views/partials/user.ejs`, { user: user });
+    },
+  ];
+
   userCreateGet = [
     (req, res) => {
       res.render('userCreating', { title: 'Create User' });
@@ -76,6 +83,7 @@ class userController {
     (req, res) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
+        console.log(errors);
         const user = usersDB.getUser(req.params.id);
         return res.status(404).render('userUpdate', {
           title: 'Update User',
@@ -100,6 +108,21 @@ class userController {
     (req, res) => {
       usersDB.deleteUser(req.params.id);
       res.redirect('/user');
+    },
+  ];
+
+  userSearch = [
+    (req, res) => {
+      let user = usersDB.searchUsers(req.query.q);
+      if (user.length === 0) {
+        res.render('userList', {
+          title: 'User List',
+          users: usersDB.getUsers(),
+          errors: [{ msg: 'No users under that name' }],
+        });
+        return;
+      }
+      res.render(`searchUsers`, { users: user });
     },
   ];
 }

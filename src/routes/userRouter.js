@@ -8,6 +8,10 @@ userRouter.get('/', userController.usersListGet);
 userRouter.get('/create', userController.userCreateGet);
 userRouter.post('/create', userController.userCreatePost);
 
+userRouter.get('/search', userController.userSearch);
+
+userRouter.get('/:id', userController.userGet);
+
 userRouter.get('/:id/update', userController.userUpdateGet);
 userRouter.post('/:id/update', userController.userUpdatePost);
 

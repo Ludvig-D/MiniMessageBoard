@@ -25,6 +25,12 @@ class UsersDB {
   deleteUser(id) {
     delete this.storage[id];
   }
+
+  searchUsers(name) {
+    const users = [...Object.values(this.storage)];
+    if (!name && !users) return;
+    return users.filter((user) => user.firstName == name);
+  }
 }
 
 export default new UsersDB();
