@@ -1,5 +1,6 @@
 import express from 'express';
 import path from 'path';
+import { body, validationResult } from 'express-validator';
 
 import route from './routes/homePageRouter.js';
 
