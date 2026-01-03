@@ -49,6 +49,39 @@ class userController {
       res.redirect('/user');
     },
   ];
+
+  userUpdateGet = [
+    (req, res) => {
+      const user = usersDB.getUser(req.params.id);
+      res.render('userUpdate', { title: 'Update User', user: user });
+    },
+  ];
+
+  userUpdatePost = [
+    validateUser,
+    (req, res) => {
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        const user = usersDB.getUser(req.params.id);
+        return res.status(404).render('userUpdate', {
+          title: 'Update User',
+          user: user,
+          errors: errors.array(),
+        });
+      }
+
+      const { firstName, lastName } = matchedData(req);
+      usersDB.updateUser(req.params.id, { firstName, lastName });
+      res.redirect('/user');
+    },
+  ];
+
+  userDelete = [
+    (req, res) => {
+      usersDB.deleteUser(req.params.id);
+      res.redirect('/user');
+    },
+  ];
 }
 
 export default new userController();
