@@ -3,6 +3,7 @@ import usersDB from '../modules/userdb.js';
 import { body, validationResult, matchedData } from 'express-validator';
 
 const alphaErr = 'must only contain letters.';
+const numberErr = 'must only contain numbers.';
 const lengthErr = 'must be between 1 and 10 characters.';
 
 const validateUser = [
@@ -18,6 +19,19 @@ const validateUser = [
     .withMessage(`Last name ${alphaErr}`)
     .isLength({ min: 1, max: 10 })
     .withMessage(`Last name ${lengthErr}`),
+  body('email').trim().isEmail().withMessage('Email must be a email.'),
+  body('age')
+    .trim()
+    .optional({ values: 'falsy' })
+    .isNumeric()
+    .withMessage(`Age ${numberErr}`)
+    .isLength()
+    .withMessage(`Age ${lengthErr}`),
+  body('bio')
+    .trim()
+    .optional({ values: 'falsy' })
+    .isLength({ max: 200 })
+    .withMessage('Bio must only contian 200 characters.'),
 ];
 
 class userController {
@@ -44,8 +58,8 @@ class userController {
         });
       }
 
-      const { firstName, lastName } = matchedData(req);
-      usersDB.addUser({ firstName, lastName });
+      const { firstName, lastName, email, age, bio } = matchedData(req);
+      usersDB.addUser({ firstName, lastName, email, age, bio });
       res.redirect('/user');
     },
   ];
