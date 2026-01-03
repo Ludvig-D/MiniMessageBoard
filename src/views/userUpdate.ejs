@@ -7,18 +7,51 @@
     <h1><%= title %></h1>
     <%- include("partials/errors.ejs") %>
     <form action="/user/<%= user.id %>/update" method="POST">
-      <input
-        type="text"
-        name="firstName"
-        value="<%= user.firstName %>"
-        required
-      />
-      <input
-        type="text"
-        name="lastName"
-        value="<%= user.lastName %>"
-        required
-      />
+      <div>
+        <label for="firstName">First Name: </label>
+        <input
+          type="text"
+          name="firstName"
+          id="firstName"
+          required
+          value="<%= user.firstName %>"
+        />
+      </div>
+      <div>
+        <label for="lastName">Last Name: </label>
+        <input
+          type="text"
+          name="lastName"
+          id="lastName"
+          required
+          value="<%= user.lastName %>"
+        />
+      </div>
+      <div>
+        <label for="email">Email: </label>
+        <input
+          type="email"
+          name="email"
+          id="email"
+          required
+          value="<%= user.email %>"
+        />
+      </div>
+      <div>
+        <label for="age">Age: </label>
+        <input
+          type="number"
+          name="age"
+          id="age"
+          max="120"
+          min="18"
+          value="<%= user.age %>"
+        />
+      </div>
+      <div>
+        <label for="bio">Bio: </label>
+        <textarea name="bio" id="bio"><%= user.bio %></textarea>
+      </div>
       <button type="submit">Update User</button>
     </form>
     <a href="/user">Back to home</a>

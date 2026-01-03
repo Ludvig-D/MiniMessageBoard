@@ -84,8 +84,14 @@ class userController {
         });
       }
 
-      const { firstName, lastName } = matchedData(req);
-      usersDB.updateUser(req.params.id, { firstName, lastName });
+      const { firstName, lastName, email, age, bio } = matchedData(req);
+      usersDB.updateUser(req.params.id, {
+        firstName,
+        lastName,
+        email,
+        age,
+        bio,
+      });
       res.redirect('/user');
     },
   ];
