@@ -20,20 +20,21 @@ const validateUser = [
     .withMessage(`Last name ${lengthErr}`),
 ];
 
-function usersListGet() {
-  (req, res) => {
-    res.render('userList', { title: 'User list', users: usersDB.getUsers() });
-  };
-}
+class userController {
+  usersListGet = [
+    (req, res) => {
+      res.render('userList', { title: 'User list', users: usersDB.getUsers() });
+    },
+  ];
 
-function userCreateGet() {
-  (req, res) => {
-    res.render('userCreating', { title: 'Create User' });
-  };
-}
+  userCreateGet = [
+    (req, res) => {
+      res.render('userCreating', { title: 'Create User' });
+    },
+  ];
 
-function userCreatePost() {
-  validateUser,
+  userCreatePost = [
+    validateUser,
     (req, res) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
@@ -46,7 +47,8 @@ function userCreatePost() {
       const { firstName, lastName } = matchedData(req);
       usersDB.addUser({ firstName, lastName });
       res.redirect('/user');
-    };
+    },
+  ];
 }
 
-export { usersListGet, userCreateGet, userCreatePost };
+export default new userController();
