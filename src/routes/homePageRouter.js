@@ -1,22 +1,12 @@
 import { Router } from 'express';
+import * as homepageController from '../controllers/homePageController.js';
 
-const route = Router();
+const homepageRouter = Router();
 
-import { messages, newMessage } from '../modules/messagesdb.js';
+homepageRouter.get('/', homepageController.homepageGet);
 
-route.get('/', (req, res) => {
-  res.render('homepage', { messages: messages });
-});
+homepageRouter.get('/new', homepageController.newMessageGet);
 
-route.get('/new', (req, res) => {
-  res.render('form');
-});
+homepageRouter.post('/new', homepageController.newMessagePost);
 
-route.post('/new', (req, res) => {
-  const { text, user } = req.body;
-  newMessage(text, user);
-
-  res.redirect('/');
-});
-
-export default route;
+export default homepageRouter;

@@ -2,7 +2,8 @@ import express from 'express';
 import path from 'path';
 import { body, validationResult } from 'express-validator';
 
-import route from './routes/homePageRouter.js';
+import homepageRouter from './routes/homePageRouter.js';
+import userRouter from './routes/userRouter.js';
 
 const PORT = 3000;
 
@@ -13,7 +14,8 @@ app.set('view engine', 'ejs');
 
 app.use(express.urlencoded({ extended: true }));
 
-app.use('/', route);
+app.use('/', homepageRouter);
+app.use('/user', userRouter);
 
 app.listen(PORT, (err) => {
   if (err) throw err;
