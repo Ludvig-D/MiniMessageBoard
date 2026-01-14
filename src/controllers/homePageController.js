@@ -1,25 +1,23 @@
-import { getAllMessages } from '../db/queries/messages.sql.js';
+import { getAllMessages, insertMessage } from '../db/queries/messages.sql.js';
 
 class homepageController {
   homepageGet = [
     async (req, res) => {
       const messages = await getAllMessages();
-      console.log(messages);
       res.render('homepage', { messages });
     },
   ];
 
   newMessageGet = [
     (req, res) => {
-      res.render('form');
+      res.render('partials/form');
     },
   ];
 
   newMessagePost = [
-    (req, res) => {
-      const { text, user } = req.body;
-      newMessage(text, user);
-
+    async (req, res) => {
+      const { text, user_id } = req.body;
+      await insertMessage(text, user_id);
       res.redirect('/');
     },
   ];

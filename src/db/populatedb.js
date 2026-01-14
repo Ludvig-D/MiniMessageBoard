@@ -5,26 +5,15 @@ const SQL = `
   CREATE TABLE IF NOT EXISTS users(
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   username VARCHAR ( 20 )
-  )
+  );
 
   CREATE TABLE IF NOT EXISTS messages (
   id INTEGER PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
   user_id INTEGER NOT NULL,
   text VARCHAR( 255 ) NOT NULL,
-  created_at timestamp DEFAULT CURRENT_TIMESTAMP
-  FOREIGN KEY (user_id) REFERENCES users(id)
-  )
-
-  INSERT INTO users (username)
-  VALUES
-    ('Dan'),
-    ('CARL');
-
-  INSERT INTO messages (user_id, text)
-  VALUES
-    (1, 'Hello World'),
-    (1, 'Hi there!'),
-    (2, 'Good night :)');
+  created_at timestamp DEFAULT CURRENT_TIMESTAMP,
+  FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+  );
 `;
 
 async function main() {

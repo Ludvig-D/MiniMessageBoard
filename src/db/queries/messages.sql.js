@@ -3,7 +3,7 @@ import pool from '../pool.js';
 async function getAllMessages() {
   const { rows } = await pool.query(
     `
-    SELECT messages.id, messages.text, users.username 
+    SELECT messages.*, users.username 
     FROM messages 
     JOIN users 
     ON messages.user_id = users.id;
@@ -12,13 +12,14 @@ async function getAllMessages() {
   return rows;
 }
 
-async function insertMessage({ text, user_id }) {
+async function insertMessage(text, user_id) {
+  console.log(text, user_id);
   await pool.query(
     `
-    INSERT INTO messages (text, user_id)
-    VALUES ($1, $2) RETURNING
+    INSERT INTO messages (user_id, text)
+    VALUES ($1, $2)
     `,
-    [text, user_id]
+    [user_id, text]
   );
 }
 

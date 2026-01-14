@@ -1,3 +1,11 @@
+import {
+  deleteUser,
+  getAllUsers,
+  getUser,
+  insertUser,
+  updateUser,
+  searchUsers,
+} from '../db/queries/users.sql.js';
 import usersDB from '../modules/userdb.js';
 
 import { body, validationResult, matchedData } from 'express-validator';
@@ -7,18 +15,12 @@ const numberErr = 'must only contain numbers.';
 const lengthErr = 'must be between 1 and 10 characters.';
 
 const validateUser = [
-  body('firstName')
+  body('username')
     .trim()
     .isAlpha()
-    .withMessage(`First name ${alphaErr}`)
-    .isLength({ min: 1, max: 10 })
-    .withMessage(`First name ${lengthErr}`),
-  body('lastName')
-    .trim()
-    .isAlpha()
-    .withMessage(`Last name ${alphaErr}`)
-    .isLength({ min: 1, max: 10 })
-    .withMessage(`Last name ${lengthErr}`),
+    .withMessage(`Username ${alphaErr}`)
+    .isLength({ min: 1, max: 20 })
+    .withMessage(`Username ${lengthErr}`),
   body('email').trim().isEmail().withMessage('Email must be a email.'),
   body('age')
     .trim()
@@ -36,15 +38,16 @@ const validateUser = [
 
 class userController {
   usersListGet = [
-    (req, res) => {
-      res.render('userList', { title: 'User list', users: usersDB.getUsers() });
+    async (req, res) => {
+      const users = await getAllUsers();
+      res.render('userList', { title: 'User list', users });
     },
   ];
 
   userGet = [
-    (req, res) => {
-      const user = usersDB.getUser(req.params.id);
-      res.render(`../views/partials/user.ejs`, { user: user });
+    async (req, res) => {
+      const user = await getUser([req.params.id]);
+      res.render(`partials/user`, { user });
     },
   ];
 
@@ -56,7 +59,7 @@ class userController {
 
   userCreatePost = [
     validateUser,
-    (req, res) => {
+    async (req, res) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(404).render('userCreating', {
@@ -64,23 +67,21 @@ class userController {
           errors: errors.array(),
         });
       }
-
-      const { firstName, lastName, email, age, bio } = matchedData(req);
-      usersDB.addUser({ firstName, lastName, email, age, bio });
+      await insertUser(matchedData(req));
       res.redirect('/user');
     },
   ];
 
   userUpdateGet = [
-    (req, res) => {
-      const user = usersDB.getUser(req.params.id);
+    async (req, res) => {
+      const user = await getUser([req.params.id]);
       res.render('userUpdate', { title: 'Update User', user: user });
     },
   ];
 
   userUpdatePost = [
     validateUser,
-    (req, res) => {
+    async (req, res) => {
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         console.log(errors);
@@ -92,37 +93,31 @@ class userController {
         });
       }
 
-      const { firstName, lastName, email, age, bio } = matchedData(req);
-      usersDB.updateUser(req.params.id, {
-        firstName,
-        lastName,
-        email,
-        age,
-        bio,
-      });
+      await updateUser(req.params.id, matchedData(req));
       res.redirect('/user');
     },
   ];
 
   userDelete = [
-    (req, res) => {
-      usersDB.deleteUser(req.params.id);
+    async (req, res) => {
+      await deleteUser(req.params.id);
       res.redirect('/user');
     },
   ];
 
   userSearch = [
-    (req, res) => {
-      let user = usersDB.searchUsers(req.query.q);
-      if (user.length === 0) {
+    async (req, res) => {
+      let users = await searchUsers(req.query.q);
+      console.log(users);
+      if (users.length === 0) {
         res.render('userList', {
           title: 'User List',
-          users: usersDB.getUsers(),
+          users: await getAllUsers(),
           errors: [{ msg: 'No users under that name' }],
         });
         return;
       }
-      res.render(`searchUsers`, { users: user });
+      res.render(`searchUsers`, { users: users });
     },
   ];
 }
