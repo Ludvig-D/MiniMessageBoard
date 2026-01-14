@@ -6,7 +6,6 @@ import {
   updateUser,
   searchUsers,
 } from '../db/queries/users.sql.js';
-import usersDB from '../modules/userdb.js';
 
 import { body, validationResult, matchedData } from 'express-validator';
 
