@@ -1,9 +1,11 @@
-import { messages, newMessage } from '../modules/messagesdb.js';
+import { getAllMessages } from '../db/queries/messages.sql.js';
 
 class homepageController {
   homepageGet = [
-    (req, res) => {
-      res.render('homepage', { messages: messages });
+    async (req, res) => {
+      const messages = await getAllMessages();
+      console.log(messages);
+      res.render('homepage', { messages });
     },
   ];
 

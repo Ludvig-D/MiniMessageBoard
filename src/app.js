@@ -1,14 +1,14 @@
 import express from 'express';
-import path from 'path';
+import 'dotenv/config';
 
 import homepageRouter from './routes/homePageRouter.js';
 import userRouter from './routes/userRouter.js';
 
-const PORT = 3000;
+const PORT = process.env.PORT;
 
 const app = express();
 
-app.set('views', path.join(process.cwd(), 'src/views'));
+app.set('views', 'src/views');
 app.set('view engine', 'ejs');
 
 app.use(express.urlencoded({ extended: true }));
