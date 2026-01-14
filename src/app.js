@@ -4,7 +4,7 @@ import 'dotenv/config';
 import homepageRouter from './routes/homePageRouter.js';
 import userRouter from './routes/userRouter.js';
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 
 const app = express();
 

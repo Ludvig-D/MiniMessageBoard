@@ -107,7 +107,6 @@ class userController {
   userSearch = [
     async (req, res) => {
       let users = await searchUsers(req.query.q);
-      console.log(users);
       if (users.length === 0) {
         res.render('userList', {
           title: 'User List',

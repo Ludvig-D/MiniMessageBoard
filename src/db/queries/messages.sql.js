@@ -13,7 +13,6 @@ async function getAllMessages() {
 }
 
 async function insertMessage(text, user_id) {
-  console.log(text, user_id);
   await pool.query(
     `
     INSERT INTO messages (user_id, text)

@@ -54,7 +54,6 @@ async function deleteUser(id) {
 }
 
 async function searchUsers(name_query) {
-  console.log(name_query);
   const { rows } = await pool.query(
     `
     SELECT * FROM users 
