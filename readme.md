@@ -1,5 +1,7 @@
 # Mini Message Board
 
+> 📘 Project from **The Odin Project** – [Mini Message Board](https://www.theodinproject.com/lessons/node-path-nodejs-mini-message-board)
+
 ## Overview
 
 Mini Message Board is a simple web application that allows users to create, read, update, and delete messages. It is built using Node.js, Express, and EJS for templating.
